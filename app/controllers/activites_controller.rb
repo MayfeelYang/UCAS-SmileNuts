@@ -44,7 +44,7 @@ class ActivitesController < ApplicationController
 				unreaded_dict.delete(id)
 			end
 			
-			session_user.update_attributes(:unreaded => unreaded_dict.to_json)
+			session_user.update_attribute(:unreaded, unreaded_dict.to_json)
 		end
 
 
@@ -91,7 +91,7 @@ class ActivitesController < ApplicationController
         for i in hot_ac_array
             hot_activities.append(i[0])
         end
-        #puts hot_activities
+        puts hot_activities
         return hot_activities 
     end
 
@@ -100,13 +100,45 @@ class ActivitesController < ApplicationController
 		
 		@activities = Activity.all()
 		hot_ac_array = hot_ac(@activities)
-		puts hot_ac_array
-		@hot_activities = Activity.find(hot_ac_array)
+		@hot_activities = []
+		for i in hot_ac_array
+			tmp_ac = Activity.find(i)
+			@hot_activities.push(tmp_ac)
+		end
+
+
 		@activities.each do |activity|
 			puts activity.start_date.strftime("%Y-%m-%d %H:%M")
 			puts activity.to_s
 		end
-		#@activities = Activity.all()
+		
+		tags=["旅行", "电影", "讲座"]
+		for tag in tags
+			candidate = []
+			@activities.each do |activity|
+				
+				tag_arr = activity.tag.split(",")
+				tag_arr.each do |one_tag|
+					if(one_tag == tag)
+						candidate.push(activity.id)
+					end
+				end
+			end
+			ac_choosen = Activity.find candidate
+			if (tag == "旅行")
+				@sum_ac_travel = ac_choosen.length()
+			end
+			if (tag == "讲座")
+				@sum_ac_lecture = ac_choosen.length()
+			end
+			if (tag == "电影")
+				@sum_ac_movie = ac_choosen.length()
+			end
+		end
+		
+		
+		
+		
 		@candidate = []
 		
 		# 分页请求
@@ -144,10 +176,10 @@ class ActivitesController < ApplicationController
 					end
 				end
 			end
-			puts @candidate
 			@activities = Activity.find @candidate
-
 		end
+		
+		
 
 		
 	end
@@ -245,8 +277,8 @@ class ActivitesController < ApplicationController
 			unread_json[activity] = 1
 		end
 		puts "-------------unread_json-----------",unread_json.to_json
-		a = activity_owner.update_attributes(unreaded: unread_json.to_json)
-		# if !a puts "-------full_messages-----",activity_owner.errors.full_messages
+		a = activity_owner.update_attribute(:unreaded,unread_json.to_json)
+		puts "-------full_messages-----",activity_owner.errors.full_messages
 		# end
 		
 		#刷新回复框
@@ -256,6 +288,7 @@ class ActivitesController < ApplicationController
 		end
 		
 	end
+	
 	
 	def add_comment
 		if (session[:user_name])

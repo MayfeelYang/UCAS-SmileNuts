@@ -26,22 +26,37 @@
 			<!-- Wrapper for slides -->
 			<div class="carousel-inner poster-wrap" role="listbox">
 				<div class="item active">
-					  <img src="/assets/poster2.gif" alt="..." class="poster">
-					  <div class="carousel-caption">
+					<% if (@hot_activities[0].picture_path) %>
+						<% path = Rails.public_path.join('/uploadImage',@hot_activities[0].picture_path)%>
+						<img src= <%= path %> alt="..." class="poster">
+					<% else %>
+						<img src="/assets/poster2.gif" alt="..." class="poster">
+					<% end %>
+					<div class="carousel-caption up_caption">
 					  	<%= link_to @hot_activities[0].name , activite_path(@hot_activities[0].id) %>
-					  </div>
+					</div>
 				</div>
 				<div class="item">
-					  <img src="/assets/poster3.jpg" alt="..." class="poster">
-					  <div class="carousel-caption">
+					<% if (@hot_activities[1].picture_path) %>
+						<% path = Rails.public_path.join('/uploadImage',@hot_activities[1].picture_path)%>
+						<img src= <%= path %> alt="..." class="poster">
+					<% else %>
+						<img src="/assets/poster1.jpg" alt="..." class="poster">
+					<% end %>
+					<div class="carousel-caption up_caption" >
 					  	<%= link_to @hot_activities[1].name , activite_path(@hot_activities[1].id) %>
-					  </div>
+					</div>
 				</div>
 				<div class="item">
-					  <img src="/assets/poster5.jpg" alt="..." class="poster">
-					  <div class="carousel-caption">
+					<% if (@hot_activities[2].picture_path) %>
+						<% path = Rails.public_path.join('/uploadImage',@hot_activities[2].picture_path)%>
+						<img src= <%= path %> alt="..." class="poster">
+					<% else %>
+						<img src="/assets/poster1.jpg" alt="..." class="poster">
+					<% end %>
+					<div class="carousel-caption up_caption">
 					  	<%= link_to @hot_activities[2].name , activite_path(@hot_activities[2].id) %>
-					  </div>
+					</div>
 				</div>
 			</div>
 			
@@ -64,8 +79,18 @@
 		<div id="tags" class="container white-background">
 				<ul class="list-inline col-sm-6 col-sm-offset-3">
 					<li> <%= link_to "全部" , {:controller => "activites" , :action => "all_events"}, class:"label label-default" %> </li>	
-					<li> <%= link_to "旅行" , {:controller => "activites" , :action => "all_events" , tag: "旅行"},class:"label label-primary" %> </li>
-					<li> <%= link_to "讲座" , {:controller => "activites" , :action => "all_events" , tag: "讲座"},class:"label label-info" %> </li>
+					<li> <%= link_to "旅行" , {:controller => "activites" , :action => "all_events" , tag: "旅行"},class:"label label-primary" %>
+						(<% if @sum_ac_travel  %>
+							<%= @sum_ac_travel %>
+						<% end %>)</li>
+					<li> <%= link_to "讲座" , {:controller => "activites" , :action => "all_events" , tag: "讲座"},class:"label label-info" %>
+						(<% if @sum_ac_lecture  %>
+							<%= @sum_ac_lecture %>
+						<% end %>)</li>
+					<li> <%= link_to "电影" , {:controller => "activites" , :action => "all_events" , tag: "电影"},class:"label label-info" %>
+						(<% if @sum_ac_movie  %>
+							<%= @sum_ac_movie %>
+						<% end %>)</li>
 				</ul>
 				<%=link_to "发起活动" ,"/launch", class:"btn"%>
 		</div>

@@ -4,6 +4,8 @@ class SessionsController < ApplicationController
   
   def create
     user = User.find_by(Email: params[:session][:email].downcase) 
+    puts "&&&&&&&&&&&&&&&&"
+    puts params[:session][:password]
     if user and user.authenticate(params[:session][:password])
       log_in user 
       redirect_to activites_all_events_path
