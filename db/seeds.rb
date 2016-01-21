@@ -7,16 +7,6 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 
-#------------------------管理员表（admins）数据添加----------------------
-
-admins = [{:name => 'daige', :password => 'daige'},
-    {:name => 'chenlu', :password => 'chenlu'},
-    {:name => 'yangmeifang', :password => 'yangmeifang'},
-  	 ]
-
-admins.each do |admin|
-    Admin.create!(admin)
-end
 
 
 #------------------------活动表（activities）数据添加----------------------
