@@ -3,7 +3,7 @@
 		<div class="thumbnail">
 			<%if activity.picture_path%>
 			<% path = Rails.public_path.join('/uploadImage',activity.picture_path)%>
-		  	<img src= <% path %> alt="活动海报"/>
+		  	<img src= <%= path %> alt="活动海报"/>
 		  	<%else%>
 		  	<img src="/assets/account/logo.png" alt="活动海报"/>
 		  	<%end%>
